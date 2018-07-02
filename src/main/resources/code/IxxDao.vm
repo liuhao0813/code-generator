@@ -1,0 +1,67 @@
+package [(${basePackage})].[(${module})].mapper;
+
+import [(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO;
+import org.apache.ibatis.annotations.Param;
+
+import org.springframework.stereotype.Repository;
+import java.util.List;
+[# th:each="import : ${entity.importList}"]
+import [( ${import} )];
+[/]
+
+
+
+
+/**
+ * [( ${entity.entityName} )]对应的Mybatis映射接口
+ */
+@Repository
+public interface I[( ${entity.entityName} )]Mapper {
+
+
+    /**
+     * 分页查找 [( ${entity.entityName} )]VO
+     * @param sysUser
+     * @param pageVO
+     * @return
+     */
+    PagedResult<[( ${entity.entityName} )]VO> findPaged[( ${entity.entityName} )]List(@Param("sysUser") [( ${entity.entityName} )]VO sysUser, @Param("pageVO") PageVO pageVO);
+
+
+    /**
+     * 根据ID查找一个[( ${entity.entityName} )]VO对象
+     * @param userId
+     * @return
+     */
+   [( ${entity.entityName} )]VO findSysUserById(Integer userId);
+
+
+    /**
+     * 根据S[( ${entity.entityName} )]VO对象查找[( ${entity.entityName} )]VO列表
+     * @param sysUser
+     * @return
+     */
+    List<[( ${entity.entityName} )]VO> find[( ${entity.entityName} )]List([( ${entity.entityName} )]VO sysUser);
+
+
+    /**
+     * 创建[( ${entity.entityName} )]对象
+     * @param sysUser
+     */
+    void create[( ${entity.entityName} )]([( ${entity.entityName} )]VO sysUser);
+
+    /**
+     * 修改[( ${entity.entityName} )]对象
+     * @param sysUser
+     */
+    void update[( ${entity.entityName} )]([( ${entity.entityName} )]VO sysUser);
+
+
+    /**
+     * 根据ID删除一个[( ${entity.entityName} )]对象
+     * @param userId
+     */
+    void delete[( ${entity.entityName} )](Integer userId);
+
+
+}

@@ -1,0 +1,62 @@
+package com.example.mybatis.demo.service;
+
+
+import com.example.mybatis.demo.entity.PageVO;
+import com.example.mybatis.demo.entity.PagedResult;
+import com.example.mybatis.demo.entity.SysUser;
+
+import java.util.List;
+
+/**
+ * 系统用户服务接口
+ *
+ * @author liuhao
+ */
+public interface ISysUserService {
+
+    /**
+     * 分页查找SysUser
+     * @param sysUser
+     * @param pageVO
+     * @return
+     */
+    PagedResult<SysUser> findPagedSysUserList(SysUser sysUser, PageVO pageVO);
+
+
+    /**
+     * 根据ID查找一个SysUser对象
+     * @param userId
+     * @return
+     */
+    SysUser findSysUserById(Integer userId);
+
+
+    /**
+     * 根据SysUser对象查找SysUser列表
+     * @param sysUser
+     * @return
+     */
+    List<SysUser> findSysUserList(SysUser sysUser);
+
+
+    /**
+     * 创建SysUser对象
+     * @param sysUser
+     */
+    void createSysUser(SysUser sysUser);
+
+    /**
+     * 修改SysUser对象
+     * @param sysUser
+     */
+    void updateSysUser(SysUser sysUser);
+
+
+    /**
+     * 根据ID删除一个SysUser对象
+     * @param userId
+     */
+    void deleteSysUser(Integer userId);
+
+
+}

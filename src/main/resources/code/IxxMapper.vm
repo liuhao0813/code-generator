@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="[(${basePackage})].[(${module})].mapper.I[( ${entity.entityName} )]Mapper">
+
+    <sql id="queryBaseInfo">
+        SELECT
+        [# th:each="field : ${entity.displayFields}"]
+        [( ${field.columnName} )] as [( ${field.fieldName} )],
+        [/]
+        FROM
+        [( ${entity.tableName} )]
+    </sql>
+
+    <sql id="queryCondition">
+        <where>
+            [# th:each="field : ${entity.displayFields}"]
+            <if test="[( ${field.fieldName} )] != null">
+                and [(${field.columnName})] = #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]}
+            </if>
+            [/]
+        </where>
+    </sql>
+
+    <sql id="queryPagedCondition">
+        <where>
+            [# th:each="field : ${entity.displayFields}"]
+            <if test="[( ${entity.entityName} )].[( ${field.fieldName} )] != null">
+                and [(${field.columnName})] = #{[( ${entity.entityName} )].[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]}
+            </if>
+            [/]
+        </where>
+    </sql>
+
+    <select id="findPaged[( ${entity.entityName} )]ListCount" resultType="java.lang.Integer">
+       SELECT count(1) from (
+          <include refid="queryBaseInfo"></include>
+          <include refid="queryPagedCondition"></include>
+       ) t
+    </select>
+
+    <select id="findPaged[( ${entity.entityName} )]List" resultType="[(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO">
+        <include refid="queryBaseInfo"></include>
+        <include refid="queryPagedCondition"></include>
+        limit #{pageVO.startIndex},#{pageVO.endIndex}
+    </select>
+
+
+    <select id="find[( ${entity.entityName} )]ById" parameterType="java.lang.Integer" resultType="[(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO">
+        <include refid="queryBaseInfo"></include>
+        <where>
+            user_id = #{userId,jdbcType=INTEGER}
+        </where>
+    </select>
+
+    <select id="find[( ${entity.entityName} )]List" resultType="[(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO">
+        <include refid="queryBaseInfo"></include>
+        <include refid="queryCondition"></include>
+    </select>
+
+    <insert id="create[( ${entity.entityName} )]" parameterType="[(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO">
+        INSERT INTO [( ${entity.tableName} )](
+        [# th:each="field : ${entity.displayFields}"]
+            [( ${field.columnName} )],
+        [/]
+        ) VALUES (
+        [# th:each="field : ${entity.displayFields}"]
+            #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]},
+        [/]
+        )
+    </insert>
+
+    <update id="update[( ${entity.entityName} )]">
+        UPDATE [( ${entity.tableName} )]
+           SET
+        [# th:each="field : ${entity.displayFields}"]
+        [( ${field.columnName} )] = #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]},
+        [/]
+          where user_id=#{userId,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete[( ${entity.entityName} )]" parameterType="java.lang.Integer">
+        DELETE from [( ${entity.tableName} )]
+        where user_id = #{userId,jdbcType=INTEGER}
+    </delete>
+
+</mapper>
