@@ -32,39 +32,39 @@ public class GenaratorCodeController {
     private CodeGeneratorConfig codeGeneratorConfig;
 
     @GetMapping("/generator")
-    public String generatorCode(HttpServletResponse response){
+    public String generatorCode(HttpServletResponse response) {
 
         String schame = codeGeneratorConfig.getTarget().getTargetDatabase();
         String basePackage = codeGeneratorConfig.getTarget().getBasePackage();
         String module = codeGeneratorConfig.getTarget().getModule();
 
-        List<Entity> entityList = tableService.findTableListBySchema(schame,"sys_user");
+        List<Entity> entityList = tableService.findTableListBySchema(schame, "sys_user");
 
-        for(Entity entity: entityList){
+        for (Entity entity : entityList) {
 
             final String tableName = entity.getTableName();
             String entityName = CodeUtils.convertEntityName(tableName);
             entity.setEntityName(entityName);
+            entity.setLowerFirstEntityName(CodeUtils.convertFieldName(entityName));
             List<Field> fieldList = entity.getDisplayFields();
-            for(Field field: fieldList){
+            for (Field field : fieldList) {
                 String fieldName = CodeUtils.convertFieldName(field.getColumnName());
                 String dataType = field.getDataType();
                 //如果这个字段是主键包含ID则设置为主键
-                if (StringUtils.equals("PRI",field.getColumnKey())||field.getColumnName().endsWith("id")){
+                if (StringUtils.equals("PRI", field.getColumnKey()) || field.getColumnName().endsWith("id")) {
 
                     entity.setPkName(fieldName);
+                    entity.setPkField(field);
                 }
-
+                field.setUpserFirstFieldName(CodeUtils.convertEntityName(fieldName));
                 field.setFieldName(fieldName);
                 field.setFieldType(CodeUtils.covertFieldType(dataType));
-                if(CodeConstants.IMPORT_DATA_TYPE_MAP.containsKey(dataType)){
+                if (CodeConstants.IMPORT_DATA_TYPE_MAP.containsKey(dataType)) {
                     String importType = CodeConstants.IMPORT_DATA_TYPE_MAP.get(dataType);
                     entity.getImportList().add(importType);
                 }
-                if(CodeConstants.JDBC_TYPE_MAP.containsKey(dataType)){
-                    field.setJdbcType(CodeConstants.JDBC_TYPE_MAP.get(dataType));
-                }
-
+                field.setJdbcType(CodeConstants.JDBC_TYPE_MAP.get(dataType));
+                //field.setJavaType(CodeConstants.JAVA_TYPE_MAP.get(dataType));
             }
 
             final Context ctx = new Context(new Locale("en"));
@@ -72,8 +72,12 @@ public class GenaratorCodeController {
             ctx.setVariable("module", module);
             ctx.setVariable("entity", entity);
 
-            CodeUtils.generatorMapperFile(ctx,emailTemplateEngine);
-            CodeUtils.generatorDaoFile(ctx,emailTemplateEngine);
+            CodeUtils.generatorMapperFile(ctx, emailTemplateEngine);
+            CodeUtils.generatorDaoFile(ctx, emailTemplateEngine);
+            CodeUtils.generatorVoFile(ctx, emailTemplateEngine);
+            CodeUtils.generatorServiceFile(ctx, emailTemplateEngine);
+            CodeUtils.generatorServiceImplFile(ctx, emailTemplateEngine);
+
         }
 
         return "success";

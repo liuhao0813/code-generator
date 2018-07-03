@@ -1,62 +1,61 @@
-package com.example.mybatis.demo.service;
+package [(${basePackage})].[(${module})].service.impl;
 
-
-import com.example.mybatis.demo.entity.PageVO;
-import com.example.mybatis.demo.entity.PagedResult;
-import com.example.mybatis.demo.entity.SysUser;
+import [(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO;
+import [(${basePackage})].[(${module})].entity.PagedResult;
+import [(${basePackage})].[(${module})].entity.PageVO;
 
 import java.util.List;
 
 /**
- * 系统用户服务接口
- *
- * @author liuhao
- */
-public interface ISysUserService {
+* [( ${entity.tableComments} )]服务接口
+*
+* @author liuhao
+*/
+public interface I[( ${entity.entityName} )]Servcie {
 
     /**
-     * 分页查找SysUser
-     * @param sysUser
-     * @param pageVO
-     * @return
-     */
-    PagedResult<SysUser> findPagedSysUserList(SysUser sysUser, PageVO pageVO);
-
-
-    /**
-     * 根据ID查找一个SysUser对象
-     * @param userId
-     * @return
-     */
-    SysUser findSysUserById(Integer userId);
+    * 分页查找[( ${entity.entityName} )]
+    * @param [( ${entity.lowerFirstEntityName} )]
+    * @param pageVO
+    * @return
+    */
+    PagedResult<[( ${entity.entityName} )]> findPaged[( ${entity.entityName} )]List([( ${entity.entityName} )] [( ${entity.lowerFirstEntityName} )], PageVO pageVO);
 
 
     /**
-     * 根据SysUser对象查找SysUser列表
-     * @param sysUser
-     * @return
-     */
-    List<SysUser> findSysUserList(SysUser sysUser);
+    * 根据ID查找一个[( ${entity.entityName} )]对象
+    * @param [( ${entity.pkField.fieldName} )]
+    * @return
+    */
+    [( ${entity.entityName} )] find[( ${entity.entityName} )]ById([( ${entity.pkField.fieldType} )] [( ${entity.pkField.fieldName} )]);
 
 
     /**
-     * 创建SysUser对象
-     * @param sysUser
-     */
-    void createSysUser(SysUser sysUser);
-
-    /**
-     * 修改SysUser对象
-     * @param sysUser
-     */
-    void updateSysUser(SysUser sysUser);
+    * 根据[( ${entity.entityName} )]对象查找[( ${entity.entityName} )]列表
+    * @param [( ${entity.lowerFirstEntityName} )]
+    * @return
+    */
+    List<[( ${entity.entityName} )]> find[( ${entity.entityName} )]List([( ${entity.entityName} )] [( ${entity.lowerFirstEntityName} )]);
 
 
     /**
-     * 根据ID删除一个SysUser对象
-     * @param userId
-     */
-    void deleteSysUser(Integer userId);
+    * 创建[( ${entity.entityName} )]对象
+    * @param [( ${entity.lowerFirstEntityName} )]
+    */
+    void create[( ${entity.entityName} )]([( ${entity.entityName} )] [( ${entity.lowerFirstEntityName} )]);
 
+    /**
+    * 修改[( ${entity.entityName} )]对象
+    * @param [( ${entity.lowerFirstEntityName} )]
+    */
+    void update[( ${entity.entityName} )]([( ${entity.entityName} )] [( ${entity.lowerFirstEntityName} )]);
+
+
+    /**
+    * 根据ID删除一个[( ${entity.entityName} )]对象
+    * @param [( ${entity.pkField.fieldName} )]
+    */
+    void delete[( ${entity.entityName} )]([( ${entity.pkField.fieldType} )] [( ${entity.pkField.fieldName} )]);
 
 }
+

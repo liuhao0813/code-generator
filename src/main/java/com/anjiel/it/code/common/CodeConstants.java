@@ -16,7 +16,7 @@ public class CodeConstants {
     /**
      * 数据库中的dataType字段和JavaVO中字段类型的映射
      */
-    public static final Map<String, String> DATA_TYPE_MAP = new HashMap<String, String>() {{
+    public static final Map<String, String> JAVA_TYPE_MAP = new HashMap<String, String>() {{
         put("varchar", "String");
         put("int", "Integer");
         put("date", "LocalDate");

@@ -8,11 +8,20 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -22,6 +31,16 @@ import java.util.Properties;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ApplicationTests {
+
+    private MockMvc mockMvc;
+
+    @Autowired
+    protected WebApplicationContext wac;
+
+    @Before
+    public void setup(){
+       mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
 
     private static  final  String filedir = ApplicationTests.class.getClassLoader().getResource("templates").getPath();
 
@@ -34,6 +53,13 @@ public class ApplicationTests {
     private CodeGeneratorConfig codeGeneratorConfig;
 
 
+
+    @Test
+    public void testGeneratorFile() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/generator")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 
     @Test
     public void contextLoads() throws IOException {

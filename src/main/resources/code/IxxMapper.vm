@@ -48,7 +48,7 @@
     <select id="find[( ${entity.entityName} )]ById" parameterType="java.lang.Integer" resultType="[(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO">
         <include refid="queryBaseInfo"></include>
         <where>
-            user_id = #{userId,jdbcType=INTEGER}
+            [( ${entity.pkField.columnName} )] = #{[( ${entity.pkField.fieldName} )],jdbcType=[( ${entity.pkField.jdbcType} )]}
         </where>
     </select>
 
@@ -75,12 +75,12 @@
         [# th:each="field : ${entity.displayFields}"]
         [( ${field.columnName} )] = #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]},
         [/]
-          where user_id=#{userId,jdbcType=INTEGER}
+          where [( ${entity.pkField.columnName} )] = #{[( ${entity.pkField.fieldName} )],jdbcType=[( ${entity.pkField.jdbcType} )]}
     </update>
 
     <delete id="delete[( ${entity.entityName} )]" parameterType="java.lang.Integer">
         DELETE from [( ${entity.tableName} )]
-        where user_id = #{userId,jdbcType=INTEGER}
+        where [( ${entity.pkField.columnName} )] = #{[( ${entity.pkField.fieldName} )],jdbcType=[( ${entity.pkField.jdbcType} )]}
     </delete>
 
 </mapper>

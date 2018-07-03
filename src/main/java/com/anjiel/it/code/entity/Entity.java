@@ -6,11 +6,13 @@ import java.util.List;
 public class Entity {
 
     private String entityName;
+    private String lowerFirstEntityName;
     private String tableName;
+    private String tableComments;
     private String pkName;
     private List<Field> displayFields;
 
-    private Field columnName;
+    private Field pkField;
 
     private List<String> importList = new ArrayList<>();
 
@@ -22,12 +24,28 @@ public class Entity {
         this.entityName = entityName;
     }
 
+    public String getLowerFirstEntityName() {
+        return lowerFirstEntityName;
+    }
+
+    public void setLowerFirstEntityName(String lowerFirstEntityName) {
+        this.lowerFirstEntityName = lowerFirstEntityName;
+    }
+
     public String getTableName() {
         return tableName;
     }
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public String getTableComments() {
+        return tableComments;
+    }
+
+    public void setTableComments(String tableComments) {
+        this.tableComments = tableComments;
     }
 
     public String getPkName() {
@@ -46,12 +64,12 @@ public class Entity {
         this.displayFields = displayFields;
     }
 
-    public Field getColumnName() {
-        return columnName;
+    public Field getPkField() {
+        return pkField;
     }
 
-    public void setColumnName(Field columnName) {
-        this.columnName = columnName;
+    public void setPkField(Field pkField) {
+        this.pkField = pkField;
     }
 
     public List<String> getImportList() {

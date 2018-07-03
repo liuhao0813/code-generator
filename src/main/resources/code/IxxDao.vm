@@ -21,47 +21,47 @@ public interface I[( ${entity.entityName} )]Mapper {
 
     /**
      * 分页查找 [( ${entity.entityName} )]VO
-     * @param sysUser
+     * @param [( ${entity.lowerFirstEntityName} )]
      * @param pageVO
      * @return
      */
-    PagedResult<[( ${entity.entityName} )]VO> findPaged[( ${entity.entityName} )]List(@Param("sysUser") [( ${entity.entityName} )]VO sysUser, @Param("pageVO") PageVO pageVO);
+    PagedResult<[( ${entity.entityName} )]VO> findPaged[( ${entity.entityName} )]List(@Param("[( ${entity.lowerFirstEntityName} )]") [( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )], @Param("pageVO") PageVO pageVO);
 
 
     /**
      * 根据ID查找一个[( ${entity.entityName} )]VO对象
-     * @param userId
+     * @param [( ${entity.pkField.fieldName} )]
      * @return
      */
-   [( ${entity.entityName} )]VO findSysUserById(Integer userId);
+   [( ${entity.entityName} )]VO find[( ${entity.entityName} )]ById([( ${entity.pkField.fieldType} )] [( ${entity.pkField.fieldName} )]);
 
 
     /**
      * 根据S[( ${entity.entityName} )]VO对象查找[( ${entity.entityName} )]VO列表
-     * @param sysUser
+     * @param [( ${entity.lowerFirstEntityName} )]
      * @return
      */
-    List<[( ${entity.entityName} )]VO> find[( ${entity.entityName} )]List([( ${entity.entityName} )]VO sysUser);
+    List<[( ${entity.entityName} )]VO> find[( ${entity.entityName} )]List([( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )]);
 
 
     /**
      * 创建[( ${entity.entityName} )]对象
-     * @param sysUser
+     * @param [( ${entity.lowerFirstEntityName} )]
      */
-    void create[( ${entity.entityName} )]([( ${entity.entityName} )]VO sysUser);
+    void create[( ${entity.entityName} )]([( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )]);
 
     /**
      * 修改[( ${entity.entityName} )]对象
-     * @param sysUser
+     * @param [( ${entity.lowerFirstEntityName} )]
      */
-    void update[( ${entity.entityName} )]([( ${entity.entityName} )]VO sysUser);
+    void update[( ${entity.entityName} )]([( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )]);
 
 
     /**
      * 根据ID删除一个[( ${entity.entityName} )]对象
-     * @param userId
+     * @param [( ${entity.pkField.fieldName} )]
      */
-    void delete[( ${entity.entityName} )](Integer userId);
+    void delete[( ${entity.entityName} )]([( ${entity.pkField.fieldType} )] [( ${entity.pkField.fieldName} )]);
 
 
 }

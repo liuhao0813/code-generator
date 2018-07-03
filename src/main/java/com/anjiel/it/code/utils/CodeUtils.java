@@ -9,7 +9,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import static com.anjiel.it.code.common.CodeConstants.DATA_TYPE_MAP;
+import static com.anjiel.it.code.common.CodeConstants.JAVA_TYPE_MAP;
+
 
 /**
  * 常用的工具类
@@ -114,8 +115,8 @@ public class CodeUtils {
      * @return
      */
     public static String covertFieldType(String dataType) {
-        if (DATA_TYPE_MAP.containsKey(dataType)) {
-            return DATA_TYPE_MAP.get(dataType);
+        if (JAVA_TYPE_MAP.containsKey(dataType)) {
+            return JAVA_TYPE_MAP.get(dataType);
         }
         return "";
     }
@@ -156,5 +157,38 @@ public class CodeUtils {
 
         generatorFile(mapperContent,mapperFilePath,"I"+entity.getEntityName()+"Mapper.java");
 
+    }
+
+    public static void generatorVoFile(Context ctx, TemplateEngine emailTemplateEngine) {
+        String basePackage = (String) ctx.getVariable("basePackage");
+        String module  = (String) ctx.getVariable("module");
+        Entity entity = (Entity) ctx.getVariable("entity");
+
+        String mapperFilePath = getFileGeneratorPath(basePackage, module, "entity");
+        String mapperContent = emailTemplateEngine.process("xxVO", ctx);
+
+        generatorFile(mapperContent,mapperFilePath,entity.getEntityName()+"VO.java");
+    }
+
+    public static void generatorServiceFile(Context ctx, TemplateEngine emailTemplateEngine) {
+        String basePackage = (String) ctx.getVariable("basePackage");
+        String module  = (String) ctx.getVariable("module");
+        Entity entity = (Entity) ctx.getVariable("entity");
+
+        String mapperFilePath = getFileGeneratorPath(basePackage, module, "service");
+        String mapperContent = emailTemplateEngine.process("IxxService", ctx);
+
+        generatorFile(mapperContent,mapperFilePath,"I"+entity.getEntityName()+"Service.java");
+    }
+
+    public static void generatorServiceImplFile(Context ctx, TemplateEngine emailTemplateEngine) {
+        String basePackage = (String) ctx.getVariable("basePackage");
+        String module  = (String) ctx.getVariable("module");
+        Entity entity = (Entity) ctx.getVariable("entity");
+
+        String mapperFilePath = getFileGeneratorPath(basePackage, module, "service/impl");
+        String mapperContent = emailTemplateEngine.process("xxService", ctx);
+
+        generatorFile(mapperContent,mapperFilePath,entity.getEntityName()+"Service.java");
     }
 }

@@ -28,6 +28,7 @@ public class TableService implements ITableService {
 
             Entity entity = new Entity();
             entity.setTableName(resultSet.getString(2));
+            entity.setTableComments(resultSet.getString(3));
             List<Field> fieldList = findColumnListByTable(scheme,tableName);
             entity.setDisplayFields(fieldList);
             return entity;

@@ -1,0 +1,49 @@
+package [(${basePackage})].[(${module})].service.impl;
+
+import [(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO;
+import [(${basePackage})].[(${module})].service.I[( ${entity.entityName} )]Service;
+import [(${basePackage})].[(${module})].mapper.I[( ${entity.entityName} )]Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import [(${basePackage})].[(${module})].entity.PagedResult;
+import [(${basePackage})].[(${module})].entity.PageVO;
+
+@Service
+public class [( ${entity.entityName} )]Servcie implements I[( ${entity.entityName} )]Service {
+
+
+    @Autowired
+    private I[( ${entity.entityName} )]Mapper [( ${entity.lowerFirstEntityName} )]Mapper;
+
+    @Override
+    public PagedResult<[( ${entity.entityName} )]> findPaged[( ${entity.entityName} )]List([( ${entity.entityName} )] [( ${entity.lowerFirstEntityName} )], PageVO pageVO) {
+        return [( ${entity.lowerFirstEntityName} )]Mapper.findPaged[( ${entity.entityName} )]List([( ${entity.lowerFirstEntityName} )],pageVO);
+    }
+
+    @Override
+    public [( ${entity.entityName} )] find[( ${entity.entityName} )]ById([( ${entity.pkField.fieldType} )] [( ${entity.pkField.fieldName} )]) {
+        return [( ${entity.lowerFirstEntityName} )]Mapper.find[( ${entity.entityName} )]ById([( ${entity.pkField.fieldName} )]);
+    }
+
+    @Override
+    public List<[( ${entity.entityName} )]> find[( ${entity.entityName} )]List([( ${entity.entityName} )] [( ${entity.lowerFirstEntityName} )]) {
+        return [( ${entity.lowerFirstEntityName} )]Mapper.find[( ${entity.entityName} )]List([( ${entity.lowerFirstEntityName} )]);
+    }
+
+    @Override
+    public void create[( ${entity.entityName} )]([( ${entity.entityName} )] [( ${entity.lowerFirstEntityName} )]) {
+        [( ${entity.lowerFirstEntityName} )]Mapper.create[( ${entity.entityName} )]([( ${entity.lowerFirstEntityName} )]);
+    }
+
+    @Override
+    public void update[( ${entity.entityName} )]([( ${entity.entityName} )] [( ${entity.lowerFirstEntityName} )]) {
+        [( ${entity.lowerFirstEntityName} )]Mapper.update[( ${entity.entityName} )]([( ${entity.lowerFirstEntityName} )]);
+    }
+
+    @Override
+    public void delete[( ${entity.entityName} )]([( ${entity.pkField.fieldType} )] [( ${entity.pkField.fieldName} )]) {
+        [( ${entity.lowerFirstEntityName} )]Mapper.delete[( ${entity.entityName} )]([( ${entity.pkField.fieldName} )]);
+    }
+}

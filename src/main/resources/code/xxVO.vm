@@ -1,0 +1,23 @@
+package [(${basePackage})].[(${module})].entity;
+
+[# th:each="import : ${entity.importList}"]
+import [( ${import} )];
+[/]
+
+
+public class [( ${entity.entityName} )]VO extends BaseVO{
+
+    [# th:each="field : ${entity.displayFields}"]
+    private [( ${field.fieldType} )] [( ${field.fieldName} )];
+    [/]
+
+    [# th:each="field : ${entity.displayFields}"]
+    public [( ${field.fieldType} )] get[( ${field.upserFirstFieldName} )]() {
+        return [( ${field.fieldName} )];
+    }
+    public void set[( ${field.upserFirstFieldName} )]([( ${field.fieldType} )] [( ${field.fieldName} )]) {
+        this.[( ${field.fieldName} )] = [( ${field.fieldName} )];
+    }
+    [/]
+
+}
