@@ -20,12 +20,5 @@ public interface ITableService {
     List<Entity> findTableListBySchema(String scheme, String tableName);
 
 
-    /**
-     * 根据schema和表名称取得对应的列信息
-     * @param schema   数据库名称
-     * @param table    表名称
-     * @return
-     */
-    List<Field> findColumnListByTable(String schema, String table);
 
  }

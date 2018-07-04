@@ -9,6 +9,9 @@
 
 ```
 
+
+
+
 分页功能使用的mybatis实现，代码后续会补充上来
 
 架构
@@ -28,3 +31,109 @@ Thymeleaf Generator mybatis  CRUD
 至于Count的查询不要写接口，但是Mapper的映射文件里要写查count的接口，通过这种方式实现比较灵活，不管是什么数据，自己写好实现就可以，具体代码看看代码，这里就不贴出来
 
 
+2018-07-04 修改默认默认配置
+默认输出的报名是com.example.it 
+默认输出的模块是demo
+默认查找的数据库是test
+
+如果的上述默认配置进行修改，在spring配置文件中修改称自己的配置即可，如下：
+```
+#配置对应的代码生成目标路径
+code.generator.target.base-package=com.example.velocitydemo
+code.generator.target.module=user
+
+#目标数据库
+code.generator.target.targetDatabase=blog
+```
+
+修改了支持自己定义的数据库，默认只是对Mysql数据库的实现，如果想实现其他数据库，只需实现ITableService接口，具体请参照MySqlTableService
+```
+package com.anjiel.it.code.service.impl;
+
+import com.anjiel.it.code.entity.Entity;
+import com.anjiel.it.code.entity.Field;
+import com.anjiel.it.code.service.ITableService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * 查询mysqlTable表信息
+ *
+ * @author liuhao
+ */
+public class MySqlTableService implements ITableService {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    /**
+     * 根据数据名，表名查询表信息（包括字段信息）
+     * @param scheme  数据库名称
+     * @param tableName
+     * @return
+     */
+    @Override
+    public List<Entity> findTableListBySchema(String scheme,String tableName) {
+
+        String sql = "SELECT TABLE_SCHEMA,TABLE_NAME,TABLE_COMMENT FROM `TABLES` where TABLE_SCHEMA=? and table_name = ?";
+        List<Entity> entityList = jdbcTemplate.query(sql, preparedStatement -> {
+            preparedStatement.setString(1, scheme);
+            preparedStatement.setString(2, tableName);}
+                ,
+                (resultSet, i) -> {
+
+            Entity entity = new Entity();
+            entity.setTableName(resultSet.getString(2));
+            entity.setTableComments(resultSet.getString(3));
+            //查询字段详情，构建VO和Mapper.xml时使用
+            List<Field> fieldList = findColumnListByTable(scheme,tableName);
+            entity.setDisplayFields(fieldList);
+            return entity;
+        });
+
+        return entityList;
+    }
+
+    private List<Field> findColumnListByTable(String schame, String table) {
+
+        String sql="SELECT COLUMN_NAME,COLUMN_TYPE,IS_NULLABLE,DATA_TYPE,COLUMN_KEY,COLUMN_COMMENT " +
+                    "FROM `COLUMNS` " +
+                    "WHERE TABLE_SCHEMA=? AND TABLE_NAME=?";
+
+        return jdbcTemplate.query(sql, (PreparedStatementSetter) preparedStatement -> {
+            preparedStatement.setString(1, schame);
+            preparedStatement.setString(2, table);
+        }, (resultSet, i) -> {
+            Field field =new Field();
+            field.setColumnName(resultSet.getString(1));
+            field.setColumnType(resultSet.getString(2));
+            field.setNullAble(resultSet.getString(3));
+            field.setDataType(resultSet.getString(4));
+            field.setNullAble(resultSet.getString(5));
+            field.setComments(resultSet.getString(6));
+            return field;
+        });
+    }
+
+}
+
+```
+我的想法是做称一个插件之类的，通过配置一个模版，可能制动生成代码，由于本人对插件开发不是很熟悉，一直做web开发，所以就想着做一个web的生成代码的。
+
+目前直接运行单元测试即可，前端还没有完成，后续会陆续优化
+```
+ @Test
+    public void testGeneratorFile() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/generator")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+```
+
+最终的执行效果如下：
+![result](https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/
+u=702257389,1274025419&fm=27&gp=0.jpg "运行结果如下")

@@ -10,12 +10,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class TableService implements ITableService {
+/**
+ * 查询mysqlTable表信息
+ *
+ * @author liuhao
+ */
+public class MySqlTableService implements ITableService {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    /**
+     * 根据数据名，表名查询表信息（包括字段信息）
+     * @param scheme  数据库名称
+     * @param tableName
+     * @return
+     */
     @Override
     public List<Entity> findTableListBySchema(String scheme,String tableName) {
 
@@ -29,6 +39,7 @@ public class TableService implements ITableService {
             Entity entity = new Entity();
             entity.setTableName(resultSet.getString(2));
             entity.setTableComments(resultSet.getString(3));
+            //查询字段详情，构建VO和Mapper.xml时使用
             List<Field> fieldList = findColumnListByTable(scheme,tableName);
             entity.setDisplayFields(fieldList);
             return entity;
@@ -37,8 +48,7 @@ public class TableService implements ITableService {
         return entityList;
     }
 
-    @Override
-    public List<Field> findColumnListByTable(String schame, String table) {
+    private List<Field> findColumnListByTable(String schame, String table) {
 
         String sql="SELECT COLUMN_NAME,COLUMN_TYPE,IS_NULLABLE,DATA_TYPE,COLUMN_KEY,COLUMN_COMMENT " +
                     "FROM `COLUMNS` " +

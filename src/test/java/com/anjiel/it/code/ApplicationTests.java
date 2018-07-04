@@ -1,8 +1,7 @@
 package com.anjiel.it.code;
 
-import com.anjiel.it.code.config.CodeGeneratorConfig;
+import com.anjiel.it.code.config.CodePropertiesConfig;
 import com.anjiel.it.code.entity.Entity;
-import com.anjiel.it.code.entity.Field;
 import com.anjiel.it.code.service.ITableService;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -13,11 +12,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -50,7 +47,7 @@ public class ApplicationTests {
 
 
     @Autowired
-    private CodeGeneratorConfig codeGeneratorConfig;
+    private CodePropertiesConfig codePropertiesConfig;
 
 
 
@@ -107,14 +104,8 @@ public class ApplicationTests {
 
 
     @Test
-    public void findColumnByTable(){
-        List<Field> listColumn = tableService.findColumnListByTable("blog","sys_user");
-        listColumn.forEach(item-> System.out.println(item.getColumnName()+"------>"+item.getComments()));
-    }
-
-    @Test
     public void findConfigTest(){
-        System.err.println(codeGeneratorConfig.getTarget().getBasePackage());
+        System.err.println(codePropertiesConfig.getTarget().getBasePackage());
 
     }
 

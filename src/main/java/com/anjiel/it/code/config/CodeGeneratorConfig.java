@@ -1,6 +1,8 @@
 package com.anjiel.it.code.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.anjiel.it.code.service.ITableService;
+import com.anjiel.it.code.service.impl.MySqlTableService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.TemplateEngine;
@@ -10,13 +12,22 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
-@ConfigurationProperties(prefix = "code.generator")
 public class CodeGeneratorConfig {
 
-    CodoGeneratorTargetProperties target = new CodoGeneratorTargetProperties();
 
     @Bean
-    public TemplateEngine emailTemplateEngine() {
+    @ConditionalOnMissingBean
+    public ITableService tableService(){
+        return new MySqlTableService();
+    }
+
+
+    /**
+     * 模版解析器配置,使用text模版解析器
+     * @return
+     */
+    @Bean
+    public TemplateEngine codeTemplateEngine() {
         final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         // Resolver for TEXT emails
         templateEngine.addTemplateResolver(textTemplateResolver());
@@ -37,11 +48,4 @@ public class CodeGeneratorConfig {
     }
 
 
-    public CodoGeneratorTargetProperties getTarget() {
-        return target;
-    }
-
-    public void setTarget(CodoGeneratorTargetProperties target) {
-        this.target = target;
-    }
 }

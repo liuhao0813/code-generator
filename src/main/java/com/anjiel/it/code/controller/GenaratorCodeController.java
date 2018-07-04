@@ -1,6 +1,7 @@
 package com.anjiel.it.code.controller;
 
 import com.anjiel.it.code.common.CodeConstants;
+import com.anjiel.it.code.config.CodePropertiesConfig;
 import com.anjiel.it.code.entity.Entity;
 import com.anjiel.it.code.utils.CodeUtils;
 import com.anjiel.it.code.config.CodeGeneratorConfig;
@@ -23,20 +24,20 @@ import java.util.Locale;
 public class GenaratorCodeController {
 
     @Autowired
-    private TemplateEngine emailTemplateEngine;
+    private TemplateEngine codeTemplateEngine;
 
     @Autowired
     private ITableService tableService;
 
     @Autowired
-    private CodeGeneratorConfig codeGeneratorConfig;
+    private CodePropertiesConfig codePropertiesConfig;
 
     @GetMapping("/generator")
     public String generatorCode(HttpServletResponse response) {
 
-        String schame = codeGeneratorConfig.getTarget().getTargetDatabase();
-        String basePackage = codeGeneratorConfig.getTarget().getBasePackage();
-        String module = codeGeneratorConfig.getTarget().getModule();
+        String schame = codePropertiesConfig.getTarget().getTargetDatabase();
+        String basePackage = codePropertiesConfig.getTarget().getBasePackage();
+        String module = codePropertiesConfig.getTarget().getModule();
 
         List<Entity> entityList = tableService.findTableListBySchema(schame, "sys_user");
 
@@ -72,11 +73,11 @@ public class GenaratorCodeController {
             ctx.setVariable("module", module);
             ctx.setVariable("entity", entity);
 
-            CodeUtils.generatorMapperFile(ctx, emailTemplateEngine);
-            CodeUtils.generatorDaoFile(ctx, emailTemplateEngine);
-            CodeUtils.generatorVoFile(ctx, emailTemplateEngine);
-            CodeUtils.generatorServiceFile(ctx, emailTemplateEngine);
-            CodeUtils.generatorServiceImplFile(ctx, emailTemplateEngine);
+            CodeUtils.generatorMapperFile(ctx, codeTemplateEngine);
+            CodeUtils.generatorDaoFile(ctx, codeTemplateEngine);
+            CodeUtils.generatorVoFile(ctx, codeTemplateEngine);
+            CodeUtils.generatorServiceFile(ctx, codeTemplateEngine);
+            CodeUtils.generatorServiceImplFile(ctx, codeTemplateEngine);
 
         }
 
