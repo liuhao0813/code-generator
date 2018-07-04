@@ -135,5 +135,4 @@ public class MySqlTableService implements ITableService {
 ```
 
 最终的执行效果如下：
-![result](https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/
-u=702257389,1274025419&fm=27&gp=0.jpg "运行结果如下")
+![result](https://github.com/liuhao0813/code-generator/blob/master/atta/result.png "运行结果如下")
