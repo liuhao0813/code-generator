@@ -19,6 +19,7 @@ public class CodeConstants {
     public static final Map<String, String> JAVA_TYPE_MAP = new HashMap<String, String>() {{
         put("varchar", "String");
         put("int", "Integer");
+        put("tinyint", "Integer");
         put("date", "LocalDate");
     }};
 
@@ -28,6 +29,7 @@ public class CodeConstants {
     public static final Map<String, String> JDBC_TYPE_MAP = new HashMap<String, String>() {{
         put("varchar", "VARCHAR");
         put("int", "INTEGER");
+        put("tinyint", "INTEGER");
         put("date", "DATE");
     }};
 

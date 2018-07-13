@@ -124,71 +124,72 @@ public class CodeUtils {
     /**
      * 生成Mybatis映射文件
      * @param ctx
-     * @param templateEngine
+     * @param codeTemplateEngine
      * @throws IOException
      */
-    public static void generatorMapperFile(Context ctx, TemplateEngine templateEngine) {
-
-        String basePackage = (String) ctx.getVariable("basePackage");
-        String module  = (String) ctx.getVariable("module");
-        Entity entity = (Entity) ctx.getVariable("entity");
-
-        String mapperFilePath = getFileGeneratorPath(basePackage, module, "mapper");
-        String mapperContent = templateEngine.process("IxxMapper", ctx);
-
-        generatorFile(mapperContent,mapperFilePath,"I"+entity.getEntityName()+"Mapper.xml");
-
+    public static void generatorMapperFile(Context ctx, TemplateEngine codeTemplateEngine) {
+        generatorFile(ctx,codeTemplateEngine,"mapper","IxxMapper","Mapper.xml",true);
     }
 
     /**
      * 生成MybatisDao文件
      * @param ctx
-     * @param templateEngine
+     * @param codeTemplateEngine
      * @throws IOException
      */
-    public static void generatorDaoFile(Context ctx, TemplateEngine templateEngine) {
-
-        String basePackage = (String) ctx.getVariable("basePackage");
-        String module  = (String) ctx.getVariable("module");
-        Entity entity = (Entity) ctx.getVariable("entity");
-
-        String mapperFilePath = getFileGeneratorPath(basePackage, module, "mapper");
-        String mapperContent = templateEngine.process("IxxDao", ctx);
-
-        generatorFile(mapperContent,mapperFilePath,"I"+entity.getEntityName()+"Mapper.java");
+    public static void generatorDaoFile(Context ctx, TemplateEngine codeTemplateEngine) {
+        generatorFile(ctx,codeTemplateEngine,"mapper","IxxDao","Mapper.java",true);
 
     }
 
-    public static void generatorVoFile(Context ctx, TemplateEngine emailTemplateEngine) {
-        String basePackage = (String) ctx.getVariable("basePackage");
-        String module  = (String) ctx.getVariable("module");
-        Entity entity = (Entity) ctx.getVariable("entity");
-
-        String mapperFilePath = getFileGeneratorPath(basePackage, module, "entity");
-        String mapperContent = emailTemplateEngine.process("xxVO", ctx);
-
-        generatorFile(mapperContent,mapperFilePath,entity.getEntityName()+"VO.java");
+    /**
+     * 生成实体类
+     * @param ctx
+     * @param codeTemplateEngine
+     */
+    public static void generatorVoFile(Context ctx, TemplateEngine codeTemplateEngine) {
+        generatorFile(ctx,codeTemplateEngine,"entity","xxVO","VO.java",false);
     }
 
-    public static void generatorServiceFile(Context ctx, TemplateEngine emailTemplateEngine) {
-        String basePackage = (String) ctx.getVariable("basePackage");
-        String module  = (String) ctx.getVariable("module");
-        Entity entity = (Entity) ctx.getVariable("entity");
-
-        String mapperFilePath = getFileGeneratorPath(basePackage, module, "service");
-        String mapperContent = emailTemplateEngine.process("IxxService", ctx);
-
-        generatorFile(mapperContent,mapperFilePath,"I"+entity.getEntityName()+"Service.java");
+    /**
+     * 生成Service接口
+     * @param ctx
+     * @param codeTemplateEngine
+     */
+    public static void generatorServiceFile(Context ctx, TemplateEngine codeTemplateEngine) {
+        generatorFile(ctx,codeTemplateEngine,"service","IxxService","Service.java",true);
     }
 
-    public static void generatorServiceImplFile(Context ctx, TemplateEngine emailTemplateEngine) {
+    /**
+     * 生成Service接口的实现类
+     * @param ctx
+     * @param codeTemplateEngine
+     */
+    public static void generatorServiceImplFile(Context ctx, TemplateEngine codeTemplateEngine) {
+        generatorFile(ctx,codeTemplateEngine,"service/impl","xxService","Service.java",false);
+    }
+
+    /**
+     * 生成Controller
+     * @param ctx
+     * @param codeTemplateEngine
+     */
+    public static void generatorControllerFile(Context ctx, TemplateEngine codeTemplateEngine) {
+        generatorFile(ctx,codeTemplateEngine,"controller","xxController","Controller.java",false);
+    }
+
+
+    private static void generatorFile(Context ctx, TemplateEngine codeTemplateEngine,String packageType,String template,String fileName, boolean isImpl){
         String basePackage = (String) ctx.getVariable("basePackage");
         String module  = (String) ctx.getVariable("module");
         Entity entity = (Entity) ctx.getVariable("entity");
 
-        String mapperFilePath = getFileGeneratorPath(basePackage, module, "service/impl");
-        String mapperContent = emailTemplateEngine.process("xxService", ctx);
-
-        generatorFile(mapperContent,mapperFilePath,entity.getEntityName()+"Service.java");
+        String mapperFilePath = getFileGeneratorPath(basePackage, module, packageType);
+        String mapperContent = codeTemplateEngine.process(template, ctx);
+        if(isImpl){
+            generatorFile(mapperContent, mapperFilePath, "I"+entity.getEntityName() + fileName);
+        }else {
+            generatorFile(mapperContent, mapperFilePath, entity.getEntityName() + fileName);
+        }
     }
 }

@@ -1,15 +1,12 @@
 package [(${basePackage})].[(${module})].mapper;
 
+import [(${basePackage})].[(${module})].entity.PageVO;
+import [(${basePackage})].[(${module})].entity.PagedResult;
 import [(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO;
 import org.apache.ibatis.annotations.Param;
 
 import org.springframework.stereotype.Repository;
 import java.util.List;
-[# th:each="import : ${entity.importList}"]
-import [( ${import} )];
-[/]
-
-
 
 
 /**

@@ -78,7 +78,7 @@ public class GenaratorCodeController {
             CodeUtils.generatorVoFile(ctx, codeTemplateEngine);
             CodeUtils.generatorServiceFile(ctx, codeTemplateEngine);
             CodeUtils.generatorServiceImplFile(ctx, codeTemplateEngine);
-
+            CodeUtils.generatorControllerFile(ctx, codeTemplateEngine);
         }
 
         return "success";

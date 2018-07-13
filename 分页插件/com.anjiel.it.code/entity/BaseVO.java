@@ -11,26 +11,26 @@ import java.time.LocalDateTime;
  */
 public abstract class BaseVO implements Serializable {
 
-    private Integer currentUserId;
-    private Integer createdBy;
+    private Long currentUserId;
+    private Long createBy;
     private LocalDateTime createTime;
-    private Integer updatedBy;
-    private LocalDateTime updatedTime;
+    private Long updateBy;
+    private LocalDateTime updateTime;
 
-    public Integer getCurrentUserId() {
+    public Long getCurrentUserId() {
         return currentUserId;
     }
 
-    public void setCurrentUserId(Integer currentUserId) {
+    public void setCurrentUserId(Long currentUserId) {
         this.currentUserId = currentUserId;
     }
 
-    public Integer getCreatedBy() {
-        return createdBy;
+    public Long getCreateBy() {
+        return createBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
-        this.createdBy = createdBy;
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
     }
 
     public LocalDateTime getCreateTime() {
@@ -41,19 +41,19 @@ public abstract class BaseVO implements Serializable {
         this.createTime = createTime;
     }
 
-    public Integer getUpdatedBy() {
-        return updatedBy;
+    public Long getUpdateBy() {
+        return updateBy;
     }
 
-    public void setUpdatedBy(Integer updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
     }
 
-    public LocalDateTime getUpdatedTime() {
-        return updatedTime;
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdatedTime(LocalDateTime updatedTime) {
-        this.updatedTime = updatedTime;
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 }

@@ -3,31 +3,29 @@
 <mapper namespace="[(${basePackage})].[(${module})].mapper.I[( ${entity.entityName} )]Mapper">
 
     <sql id="queryBaseInfo">
-        SELECT
-        [# th:each="field : ${entity.displayFields}"]
-        [( ${field.columnName} )] as [( ${field.fieldName} )],
-        [/]
+        SELECT [# th:each="field : ${entity.displayFields}"]
+        [( ${field.columnName} )] as [( ${field.fieldName} )], [/]
+        create_by as createBy,
+        create_time as createTime,
+        update_by as updateBy,
+        update_time as updateTime
         FROM
         [( ${entity.tableName} )]
     </sql>
 
     <sql id="queryCondition">
-        <where>
-            [# th:each="field : ${entity.displayFields}"]
+        <where>[# th:each="field : ${entity.displayFields}"]
             <if test="[( ${field.fieldName} )] != null">
                 and [(${field.columnName})] = #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]}
-            </if>
-            [/]
+            </if>[/]
         </where>
     </sql>
 
     <sql id="queryPagedCondition">
-        <where>
-            [# th:each="field : ${entity.displayFields}"]
-            <if test="[( ${entity.entityName} )].[( ${field.fieldName} )] != null">
-                and [(${field.columnName})] = #{[( ${entity.entityName} )].[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]}
-            </if>
-            [/]
+        <where>[# th:each="field : ${entity.displayFields}"]
+            <if test="[( ${entity.lowerFirstEntityName} )].[( ${field.fieldName} )] != null">
+                and [(${field.columnName})] = #{[( ${entity.lowerFirstEntityName} )].[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]}
+            </if>[/]
         </where>
     </sql>
 
@@ -58,29 +56,33 @@
     </select>
 
     <insert id="create[( ${entity.entityName} )]" parameterType="[(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO">
-        INSERT INTO [( ${entity.tableName} )](
-        [# th:each="field : ${entity.displayFields}"]
-            [( ${field.columnName} )],
-        [/]
-        ) VALUES (
-        [# th:each="field : ${entity.displayFields}"]
-            #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]},
-        [/]
+        INSERT INTO [( ${entity.tableName} )]([# th:each="field : ${entity.displayFields}"]
+            [( ${field.columnName} )], [/]
+            create_by,
+            create_time,
+            update_by,
+            update_time
+        ) VALUES ( [# th:each="field : ${entity.displayFields}"]
+            #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]}, [/]
+            #{currentUserId,jdbcType=NUMERIC},
+            now(),
+            #{currentUserId,jdbcType=NUMERIC},
+            now()
         )
     </insert>
 
     <update id="update[( ${entity.entityName} )]">
         UPDATE [( ${entity.tableName} )]
-           SET
-        [# th:each="field : ${entity.displayFields}"]
-        [( ${field.columnName} )] = #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]},
-        [/]
-          where [( ${entity.pkField.columnName} )] = #{[( ${entity.pkField.fieldName} )],jdbcType=[( ${entity.pkField.jdbcType} )]}
+           SET [# th:each="field : ${entity.displayFields}"]
+            [( ${field.columnName} )] = #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]}, [/]
+            update_by = #{currentUserId,jdbcType=NUMERIC},
+            update_time = now()
+          WHERE [( ${entity.pkField.columnName} )] = #{[( ${entity.pkField.fieldName} )],jdbcType=[( ${entity.pkField.jdbcType} )]}
     </update>
 
     <delete id="delete[( ${entity.entityName} )]" parameterType="java.lang.Integer">
-        DELETE from [( ${entity.tableName} )]
-        where [( ${entity.pkField.columnName} )] = #{[( ${entity.pkField.fieldName} )],jdbcType=[( ${entity.pkField.jdbcType} )]}
+        DELETE FROM [( ${entity.tableName} )]
+        WHERE [( ${entity.pkField.columnName} )] = #{[( ${entity.pkField.fieldName} )],jdbcType=[( ${entity.pkField.jdbcType} )]}
     </delete>
 
 </mapper>

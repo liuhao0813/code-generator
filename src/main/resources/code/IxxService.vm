@@ -11,23 +11,23 @@ import java.util.List;
 *
 * @author liuhao
 */
-public interface I[( ${entity.entityName} )]Servcie {
+public interface I[( ${entity.entityName} )]Service {
 
     /**
-    * 分页查找[( ${entity.entityName} )]
+    * 分页查找[( ${entity.entityName} )]VO
     * @param [( ${entity.lowerFirstEntityName} )]
     * @param pageVO
     * @return
     */
-    PagedResult<[( ${entity.entityName} )]> findPaged[( ${entity.entityName} )]List([( ${entity.entityName} )] [( ${entity.lowerFirstEntityName} )], PageVO pageVO);
+    PagedResult<[( ${entity.entityName} )]VO> findPaged[( ${entity.entityName} )]List([( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )], PageVO pageVO);
 
 
     /**
-    * 根据ID查找一个[( ${entity.entityName} )]对象
+    * 根据ID查找一个[( ${entity.entityName} )]VO对象
     * @param [( ${entity.pkField.fieldName} )]
     * @return
     */
-    [( ${entity.entityName} )] find[( ${entity.entityName} )]ById([( ${entity.pkField.fieldType} )] [( ${entity.pkField.fieldName} )]);
+    [( ${entity.entityName} )]VO find[( ${entity.entityName} )]ById([( ${entity.pkField.fieldType} )] [( ${entity.pkField.fieldName} )]);
 
 
     /**
@@ -35,20 +35,20 @@ public interface I[( ${entity.entityName} )]Servcie {
     * @param [( ${entity.lowerFirstEntityName} )]
     * @return
     */
-    List<[( ${entity.entityName} )]> find[( ${entity.entityName} )]List([( ${entity.entityName} )] [( ${entity.lowerFirstEntityName} )]);
+    List<[( ${entity.entityName} )]VO> find[( ${entity.entityName} )]List([( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )]);
 
 
     /**
     * 创建[( ${entity.entityName} )]对象
     * @param [( ${entity.lowerFirstEntityName} )]
     */
-    void create[( ${entity.entityName} )]([( ${entity.entityName} )] [( ${entity.lowerFirstEntityName} )]);
+    void create[( ${entity.entityName} )]([( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )]);
 
     /**
     * 修改[( ${entity.entityName} )]对象
     * @param [( ${entity.lowerFirstEntityName} )]
     */
-    void update[( ${entity.entityName} )]([( ${entity.entityName} )] [( ${entity.lowerFirstEntityName} )]);
+    void update[( ${entity.entityName} )]([( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )]);
 
 
     /**
