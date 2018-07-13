@@ -5,9 +5,6 @@
 `如果需要对其他数据库分页，需修改对应的查询，后续我会统一接口，默认是对Mysql的实现，可通过实现接口，实现其他数据库表的生成
 `
 
-```
-
-```
 
 
 
@@ -136,3 +133,45 @@ public class MySqlTableService implements ITableService {
 
 最终的执行效果如下：
 ![result](https://github.com/liuhao0813/code-generator/blob/master/atta/result.png "运行结果如下")
+
+
+
+以上模版都是针对MYSQL写的，如果需要支持其他数据库，可能在mybatis对应的映射模板文件中做调整，比如说分页功能,你需要修改成对应的数据的分页
+mysql如下：
+```$xslt
+<select id="findPaged[( ${entity.entityName} )]List" resultType="[(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO">
+        <include refid="queryBaseInfo"></include>
+        <include refid="queryPagedCondition"></include>
+        limit #{pageVO.startIndex},#{pageVO.endIndex}
+    </select>
+```
+
+注意：为了更好的应用于生产环境，这里需要对每个表添加四个审计字段，
+create_by 创建人
+create_time 创建时间
+update_by 修改人
+update_time 修改时间
+
+1、添加这个四个字段，一般在生成环境用得上
+2、处理模版起来比较方便，不用考虑迭代情况下最后一个逗号问题
+问题如下：
+```$xslt
+<sql id="queryBaseInfo">
+        SELECT 
+        [# th:each="field : ${entity.displayFields}"]
+        [( ${field.columnName} )] as [( ${field.fieldName} )], 
+        [/]
+        <!-- 如果没有如下字段，上面迭代出来的字段后面就会多一个逗号  -->
+        create_by as createBy,
+        create_time as createTime,
+        update_by as updateBy,
+        update_time as updateTime
+        FROM
+        [( ${entity.tableName} )]
+    </sql>
+```
+> 如果不需要的同学请自行处理一下，有好的处理方案欢迎交流
+
+
+
+####如在使用过程中有任何问题欢迎联系我QQ：237594169 也可以直接在GITHUB上提ISSUES。功能已经实现，后续会做代码的重构和优化
