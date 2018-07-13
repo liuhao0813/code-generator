@@ -136,6 +136,8 @@ public class MySqlTableService implements ITableService {
 
 
 
+2018-07-13 修改日志
+
 以上模版都是针对MYSQL写的，如果需要支持其他数据库，可能在mybatis对应的映射模板文件中做调整，比如说分页功能,你需要修改成对应的数据的分页
 mysql如下：
 ```$xslt
@@ -174,4 +176,4 @@ update_time 修改时间
 
 
 
-####如在使用过程中有任何问题欢迎联系我QQ：237594169 也可以直接在GITHUB上提ISSUES。功能已经实现，后续会做代码的重构和优化
+#### 如在使用过程中有任何问题欢迎联系我QQ：237594169 也可以直接在GITHUB上提ISSUES。功能已经实现，后续会做代码的重构和优化
