@@ -1,0 +1,30 @@
+package [(${basePackage})].[(${module})].entity;
+
+[# th:each="import : ${entity.importList}"]
+import [( ${import} )];
+[/]
+
+
+/**
+ *  [( ${entity.tableComments} )]实体类
+ */
+public class [( ${entity.entityName} )]VO extends BaseVO{
+
+
+    [# th:each="field : ${entity.displayFields}"]
+    /**
+     *  [( ${field.comments} )]
+     */
+    private [( ${field.fieldType} )] [( ${field.fieldName} )];
+
+    [/][# th:each="field : ${entity.displayFields}"]
+    public [( ${field.fieldType} )] get[( ${field.upserFirstFieldName} )]() {
+        return [( ${field.fieldName} )];
+    }
+
+    public void set[( ${field.upserFirstFieldName} )]([( ${field.fieldType} )] [( ${field.fieldName} )]) {
+        this.[( ${field.fieldName} )] = [( ${field.fieldName} )];
+    }
+
+    [/]
+}

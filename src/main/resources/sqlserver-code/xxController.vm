@@ -1,0 +1,93 @@
+package [(${basePackage})].[(${module})].controller;
+
+
+import [(${basePackage})].[(${module})].entity.PageVO;
+import [(${basePackage})].[(${module})].entity.PagedResult;
+import [(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO;
+import [(${basePackage})].[(${module})].service.I[( ${entity.entityName} )]Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * [( ${entity.entityName} )]控制器
+ */
+@RestController
+@RequestMapping("/[( ${entity.lowerFirstEntityName} )]")
+public class [( ${entity.entityName} )]Controller {
+
+
+    @Autowired
+    private I[( ${entity.entityName} )]Service [( ${entity.lowerFirstEntityName} )]Service;
+
+
+    /**
+     * 分页服务接口
+     * @param [( ${entity.lowerFirstEntityName} )]
+     * @param pageVO
+     * @return
+     */
+    @GetMapping("/list/page/{currentPage}/{pageSize}")
+    public ResponseEntity findPaged[( ${entity.entityName} )]List(@RequestParam [( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )], @PathVariable PageVO pageVO){
+        PagedResult<[( ${entity.entityName} )]VO> paged[( ${entity.entityName} )]List = [( ${entity.lowerFirstEntityName} )]Service.findPaged[( ${entity.entityName} )]List([( ${entity.lowerFirstEntityName} )], pageVO);
+        return new ResponseEntity(paged[( ${entity.entityName} )]List,HttpStatus.OK);
+    }
+
+    /**
+     * 单个记录查询接口
+     * @param [( ${entity.pkField.fieldName} )]
+     * @return
+     */
+    @GetMapping("/{[( ${entity.pkField.fieldName} )]}")
+    public ResponseEntity find[( ${entity.entityName} )]ById(@PathVariable [( ${entity.pkField.fieldType} )] [( ${entity.pkField.fieldName} )]){
+        [( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )]VO = [( ${entity.lowerFirstEntityName} )]Service.find[( ${entity.entityName} )]ById([( ${entity.pkField.fieldName} )]);
+        return new ResponseEntity([( ${entity.lowerFirstEntityName} )]VO,HttpStatus.OK);
+    }
+
+    /**
+     * 根据条件查询所有记录接口
+     * @param [( ${entity.lowerFirstEntityName} )]
+     * @return
+     */
+    @GetMapping("/list")
+    public ResponseEntity find[( ${entity.entityName} )]List(@RequestParam [( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )]){
+        List<[( ${entity.entityName} )]VO> [( ${entity.lowerFirstEntityName} )]List = [( ${entity.lowerFirstEntityName} )]Service.find[( ${entity.entityName} )]List([( ${entity.lowerFirstEntityName} )]);
+        return new ResponseEntity([( ${entity.lowerFirstEntityName} )]List,HttpStatus.OK);
+    }
+
+    /**
+     * 创建对象接口
+     * @param [( ${entity.lowerFirstEntityName} )]
+     * @return
+     */
+    @PostMapping
+    public ResponseEntity create[( ${entity.entityName} )]([( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )]){
+        [( ${entity.lowerFirstEntityName} )]Service.create[( ${entity.entityName} )]([( ${entity.lowerFirstEntityName} )]);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
+     * 修改对象接口
+     * @param [( ${entity.lowerFirstEntityName} )]
+     * @return
+     */
+    @PutMapping
+    public ResponseEntity update[( ${entity.entityName} )]([( ${entity.entityName} )]VO [( ${entity.lowerFirstEntityName} )]){
+        [( ${entity.lowerFirstEntityName} )]Service.update[( ${entity.entityName} )]([( ${entity.lowerFirstEntityName} )]);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    /**
+     * 修改对象接口
+     * @param [( ${entity.pkField.fieldName} )]
+     * @return
+     */
+    @DeleteMapping("/{[( ${entity.pkField.fieldName} )]}")
+    public ResponseEntity delete[( ${entity.entityName} )](@PathVariable [( ${entity.pkField.fieldType} )] [( ${entity.pkField.fieldName} )]){
+        [( ${entity.lowerFirstEntityName} )]Service.delete[( ${entity.entityName} )]([( ${entity.pkField.fieldName} )]);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+}

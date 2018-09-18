@@ -3,12 +3,8 @@
 <mapper namespace="[(${basePackage})].[(${module})].mapper.I[( ${entity.entityName} )]Mapper">
 
     <sql id="queryBaseInfo">
-        SELECT [# th:each="field : ${entity.displayFields}"]
-        [( ${field.columnName} )] as [( ${field.fieldName} )], [/]
-        create_by as createBy,
-        create_time as createTime,
-        update_by as updateBy,
-        update_time as updateTime
+        SELECT [# th:each="field,userStat: ${entity.displayFields}"]
+        [( ${field.columnName} )] as [( ${field.fieldName} )][# th:if= !${userStat.last} ],[/][/]
         FROM
         [( ${entity.tableName} )]
     </sql>
@@ -56,27 +52,17 @@
     </select>
 
     <insert id="create[( ${entity.entityName} )]" parameterType="[(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO">
-        INSERT INTO [( ${entity.tableName} )]([# th:each="field : ${entity.displayFields}"]
-            [( ${field.columnName} )], [/]
-            create_by,
-            create_time,
-            update_by,
-            update_time
-        ) VALUES ( [# th:each="field : ${entity.displayFields}"]
-            #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]}, [/]
-            #{currentUserId,jdbcType=NUMERIC},
-            now(),
-            #{currentUserId,jdbcType=NUMERIC},
-            now()
+        INSERT INTO [( ${entity.tableName} )]([# th:each="field,userStat : ${entity.displayFields}"]
+            [( ${field.columnName} )][# th:if= !${userStat.last} ],[/] [/]
+        ) VALUES ( [# th:each="field,userStat : ${entity.displayFields}"]
+            #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]}[# th:if= !${userStat.last} ],[/] [/]
         )
     </insert>
 
     <update id="update[( ${entity.entityName} )]">
         UPDATE [( ${entity.tableName} )]
-           SET [# th:each="field : ${entity.displayFields}"]
-            [( ${field.columnName} )] = #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]}, [/]
-            update_by = #{currentUserId,jdbcType=NUMERIC},
-            update_time = now()
+           SET [# th:each="field,userStat : ${entity.displayFields}"]
+            [( ${field.columnName} )] = #{[( ${field.fieldName} )],jdbcType=[( ${field.jdbcType} )]}[# th:if= !${userStat.last} ],[/] [/]
           WHERE [( ${entity.pkField.columnName} )] = #{[( ${entity.pkField.fieldName} )],jdbcType=[( ${entity.pkField.jdbcType} )]}
     </update>
 
