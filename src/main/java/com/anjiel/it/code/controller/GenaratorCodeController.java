@@ -39,7 +39,7 @@ public class GenaratorCodeController {
         String basePackage = codePropertiesConfig.getTarget().getBasePackage();
         String module = codePropertiesConfig.getTarget().getModule();
 
-        List<Entity> entityList = tableService.findTableListBySchema(schame, "sys_user");
+        List<Entity> entityList = tableService.findTableListBySchema(schame, "sys_role");
 
         for (Entity entity : entityList) {
 

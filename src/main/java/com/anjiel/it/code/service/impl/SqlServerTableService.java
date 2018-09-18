@@ -6,7 +6,6 @@ import com.anjiel.it.code.service.ITableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
  *
  * @author liuhao
  */
-public class MySqlTableService implements ITableService {
+public class SqlServerTableService implements ITableService {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -29,13 +28,15 @@ public class MySqlTableService implements ITableService {
     @Override
     public List<Entity> findTableListBySchema(String scheme,String tableName) {
 
-        String sql = "SELECT TABLE_SCHEMA,TABLE_NAME,TABLE_COMMENT FROM `TABLES` where TABLE_SCHEMA=? and table_name = ?";
+
+        //String sql = "SELECT TABLE_SCHEMA,TABLE_NAME,TABLE_COMMENT FROM `TABLES` where TABLE_SCHEMA=? and table_name = ?";
+        String sql = "SELECT o.id, o.name TABLE_NAME, CONVERT(varchar(100), p.value) TABLE_COMMENT,o.crdate createTime,o.xtype engine\n" +
+                "FROM sysobjects o LEFT JOIN sys.extended_properties p on o.id=p.major_id and o.info = p.minor_id\n" +
+                "WHERE o.xtype='U' AND o.name = ?";
         List<Entity> entityList = jdbcTemplate.query(sql, preparedStatement -> {
-            preparedStatement.setString(1, scheme);
-            preparedStatement.setString(2, tableName);}
+            preparedStatement.setString(1, tableName);}
                 ,
                 (resultSet, i) -> {
-
             Entity entity = new Entity();
             entity.setTableName(resultSet.getString(2));
             entity.setTableComments(resultSet.getString(3));
@@ -50,21 +51,22 @@ public class MySqlTableService implements ITableService {
 
     private List<Field> findColumnListByTable(String schame, String table) {
 
-        String sql="SELECT COLUMN_NAME,COLUMN_TYPE,IS_NULLABLE,DATA_TYPE,COLUMN_KEY,COLUMN_COMMENT " +
+        /*String sql="SELECT COLUMN_NAME,COLUMN_TYPE,IS_NULLABLE,DATA_TYPE,COLUMN_KEY,COLUMN_COMMENT " +
                     "FROM `COLUMNS` " +
-                    "WHERE TABLE_SCHEMA=? AND TABLE_NAME=?";
+                    "WHERE TABLE_SCHEMA=? AND TABLE_NAME=?";*/
+
+        String sql="SELECT c.name COLUMN_NAME, t.name COLUMN_TYPE, t.name DATA_TYPE,CONVERT(varchar(100), p.value) COLUMN_COMMENT \n" +
+        "FROM syscolumns c LEFT JOIN systypes t on c.xtype = t.xusertype LEFT JOIN sysobjects o on o.id=c.id LEFT JOIN sys.extended_properties p ON c.id=p.major_id AND c.colid=p.minor_id\n" +
+        "where o.name=?";
 
         return jdbcTemplate.query(sql, (PreparedStatementSetter) preparedStatement -> {
-            preparedStatement.setString(1, schame);
-            preparedStatement.setString(2, table);
+            preparedStatement.setString(1, table);
         }, (resultSet, i) -> {
             Field field =new Field();
             field.setColumnName(resultSet.getString(1));
             field.setColumnType(resultSet.getString(2));
-            field.setNullAble(resultSet.getString(3));
-            field.setDataType(resultSet.getString(4));
-            field.setNullAble(resultSet.getString(5));
-            field.setComments(resultSet.getString(6));
+            field.setDataType(resultSet.getString(3));
+            field.setComments(resultSet.getString(4));
             return field;
         });
     }

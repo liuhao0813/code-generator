@@ -3,10 +3,11 @@
 <mapper namespace="[(${basePackage})].[(${module})].mapper.I[( ${entity.entityName} )]Mapper">
 
     <sql id="queryBaseInfo">
-        SELECT [# th:each="field,userStat: ${entity.displayFields}"]
-        [( ${field.columnName} )] as [( ${field.fieldName} )][# th:if= !${userStat.last} ],[/][/]
-        FROM
-        [( ${entity.tableName} )]
+           SELECT <if test="pageVO == null"> ROW_NUMBER() OVER (ORDER BY o.id) AS RowNumber,</if>
+        		[# th:each="field,userStat: ${entity.displayFields}"][( ${field.columnName} )] as [( ${field.fieldName} )][# th:if= !${userStat.last} ],[/]
+        		[/]
+           FROM
+                [( ${entity.tableName} )]
     </sql>
 
     <sql id="queryCondition">
@@ -33,9 +34,15 @@
     </select>
 
     <select id="findPaged[( ${entity.entityName} )]List" resultType="[(${basePackage})].[(${module})].entity.[( ${entity.entityName} )]VO">
-        <include refid="queryBaseInfo"></include>
-        <include refid="queryPagedCondition"></include>
-        limit #{pageVO.startIndex},#{pageVO.endIndex}
+        <if test="pageVO != null">
+            SELECT top(#{limit})
+            a.engine, a.tableName, a.tableComment,a.createTime
+            from (
+                <include refid="queryBaseInfo"></include>
+                <include refid="queryPagedCondition"></include>
+            ) a
+            where a.RowNumber > (#{page}-1)*#{limit}
+        </if>
     </select>
 
 
